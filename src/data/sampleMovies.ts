@@ -391,7 +391,7 @@ export const SAMPLE_MOVIES = [
     overview:
       "Based on the Ancient Greek epic. After ten years of war, King Odysseus sets sail for Ithaca, eager to reunite with his beloved. But his journey home is far more treacherous than the battlefield, as he must face deadly monsters and vengeful gods to survive.",
     popularity: 165.1631,
-    poster_path: "/xBHCRB7zLIW41w8QskfwJhm32YF.jpg",
+    poster_path: null, // no poster on purpose, this is our fallback test case
     release_date: "2026-07-03",
     softcore: false,
     video: false,
