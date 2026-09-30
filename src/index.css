@@ -1013,3 +1013,14 @@ select {
     gap: 12px;
   }
 }
+
+.status {
+  text-align: center;
+  padding: 24px;
+  color: #a1a1aa;
+  font-size: 14px;
+}
+
+.status-error {
+  color: #f87171;
+}

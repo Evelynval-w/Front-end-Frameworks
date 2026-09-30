@@ -8,17 +8,23 @@ function filterSample(search) {
   return SAMPLE_MOVIES.filter((m) => m.title.toLowerCase().includes(q));
 }
 
-async function fetchMovies({
-  search = "",
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  genre = "",
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  sort = "popularity",
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onlyFavorites = false,
-  page = 1,
-  signal,
-} = {}) {
+/**
+ * @param {{
+ *   search?: string,
+ *   genre?: string,
+ *   sort?: string,
+ *   onlyFavorites?: boolean,
+ *   page?: number,
+ *   signal?: AbortSignal,
+ * }} [options]
+ */
+async function fetchMovies(options = {}) {
+  const {
+    search = "",
+    // genre, sort, onlyFavorites are accepted but not wired up until session 4
+    page = 1,
+    signal,
+  } = options;
   const key = import.meta.env.VITE_TMDB_API_KEY;
 
   // no key => stay offline, filter the local sample data by title
