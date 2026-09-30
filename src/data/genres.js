@@ -20,7 +20,7 @@ export const GENRES = {
   37: "Western"
 };
 
-export function getGenreNames(genreIds: number[] = []) {
+export function getGenreNames(genreIds = []) {
   if (!genreIds || !genreIds.length) return ["General"];
-  return genreIds.map(id => GENRES[id] || "Other");
+  return genreIds.map((id) => GENRES[id] || "Other");
 }
