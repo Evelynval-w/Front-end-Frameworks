@@ -1,28 +1,24 @@
-import { useState } from "react"
-import MovieList from "./components/MovieList"
-import SearchBar from "./components/SearchBar"
-import { useMovies } from "./hooks/useMovies"
+import { useEffect } from "react"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import HomePage from "./pages/HomePage"
+import AboutPage from "./pages/AboutPage"
+import NotFoundPage from "./pages/NotFoundPage"
+import { getTheme, setTheme } from "./utils/storage"
 
-const App = ()  => {
-  const { movies, isLoading, error } = useMovies()
-  const [query, setQuery] = useState("")
-  const [minRating] = useState(0) // no UI for this yet, saving it for later
-
-  // derived, not stored in state, so it can never go stale
-  const filteredMovies = movies.filter(
-    (movie) =>
-      movie.title.toLowerCase().includes(query.toLowerCase()) &&
-      movie.vote_average >= minRating
-  )
+const App = () => {
+  // apply the saved theme once on mount so the <html data-theme> matches storage
+  useEffect(() => {
+    setTheme(getTheme())
+  }, [])
 
   return (
-    <div className="app-layout">
-      <h1>Movie App</h1>
-      <SearchBar query={query} onChange={setQuery} />
-      {isLoading && <p className="status">Loading movies…</p>}
-      {error && <p className="status status-error">Error: {error}</p>}
-      {!isLoading && !error && <MovieList movies={filteredMovies} />}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
