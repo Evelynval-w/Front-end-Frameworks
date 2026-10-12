@@ -6,7 +6,7 @@ export default function NotFoundPage() {
   return (
     <div className="app-layout not-found">
       <h1>404</h1>
-      <p>We couldn't find that page.</p>
+      <p>Page not found.</p>
       <button className="btn-primary" onClick={() => navigate("/")}>
         Back to Home
       </button>

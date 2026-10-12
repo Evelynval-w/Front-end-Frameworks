@@ -38,11 +38,12 @@ export default function Header({
         <div className="search-wrapper">
           <Search size={16} className="search-icon" />
           <input
-            type="search"
+            type="text"
             className="search-input"
             placeholder="Search movies..."
             value={search}
             onChange={(e) => onSearch(e.target.value)}
+            aria-label="Search movies"
           />
           {search && (
             <button
