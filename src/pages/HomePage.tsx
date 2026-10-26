@@ -6,7 +6,6 @@ import MovieCard from "../components/MovieCard"
 import MovieModal from "../components/MovieModal"
 import ApiConfigModal from "../components/ApiConfigModal"
 import { movieService } from "../services/movieService"
-import { getFavorites } from "../utils/storage"
 import { Movie } from "../types"
 
 export default function HomePage() {
@@ -23,9 +22,6 @@ export default function HomePage() {
 
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null)
   const [apiConfigOpen, setApiConfigOpen] = useState(false)
-
-  // favCount still comes from storage until phase 3 moves favorites into context
-  const [favCount, setFavCount] = useState(getFavorites().length)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -55,8 +51,6 @@ export default function HomePage() {
     return () => controller.abort()
   }, [search, genre, sort, onlyFavorites])
 
-  const refreshFavCount = () => setFavCount(getFavorites().length)
-
   const avgRating =
     movies.length > 0
       ? movies.reduce((s, m) => s + (m.vote_average || 0), 0) / movies.length
@@ -69,7 +63,6 @@ export default function HomePage() {
         onSearch={setSearch}
         onlyFavorites={onlyFavorites}
         onToggleFavorites={() => setOnlyFavorites((v) => !v)}
-        favCount={favCount}
         onOpenApiConfig={() => setApiConfigOpen(true)}
       />
       <FilterBar
@@ -103,7 +96,6 @@ export default function HomePage() {
         <MovieModal
           movie={selectedMovie}
           onClose={() => setSelectedMovie(null)}
-          onFavoriteChange={refreshFavCount}
         />
       )}
       {apiConfigOpen && (

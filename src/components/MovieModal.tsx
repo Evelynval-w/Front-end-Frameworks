@@ -1,24 +1,19 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { Heart, X, Youtube } from "lucide-react"
 import { Movie } from "../types"
 import { getBackdropUrl, getPosterUrl } from "../data/sampleMovies"
 import { getGenreNames } from "../data/genres"
-import { getFavorites, toggleFavorite } from "../utils/storage"
+import { useAppContext } from "../context/AppContext"
 
 type MovieModalProps = {
   movie: Movie
   onClose: () => void
-  onFavoriteChange?: () => void
 }
 
-export default function MovieModal({
-  movie,
-  onClose,
-  onFavoriteChange,
-}: MovieModalProps) {
-  const [isFavorite, setIsFavorite] = useState(
-    getFavorites().some((m: Movie) => m.id === movie.id)
-  )
+export default function MovieModal({ movie, onClose }: MovieModalProps) {
+  // pulling from context means the heart on the card updates at the same time
+  const { isFavorite, toggleFavorite } = useAppContext()
+  const favorited = isFavorite(movie.id)
 
   // lock scroll + listen for Escape; always clean up both so a stuck
   // body-overflow or dangling listener can't bleed into the next modal
@@ -39,12 +34,6 @@ export default function MovieModal({
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) onClose()
-  }
-
-  const handleToggleFavorite = () => {
-    const next = toggleFavorite(movie)
-    setIsFavorite(next.some((m: Movie) => m.id === movie.id))
-    onFavoriteChange?.()
   }
 
   const trailerUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(
@@ -97,11 +86,11 @@ export default function MovieModal({
             <div className="modal-actions">
               <button
                 type="button"
-                className={`btn-primary ${isFavorite ? "active" : ""}`}
-                onClick={handleToggleFavorite}
+                className={`btn-primary ${favorited ? "active" : ""}`}
+                onClick={() => toggleFavorite(movie)}
               >
                 <Heart size={16} />
-                {isFavorite ? "Remove from favorites" : "Add to favorites"}
+                {favorited ? "Remove from favorites" : "Add to favorites"}
               </button>
               <a
                 className="btn-link"

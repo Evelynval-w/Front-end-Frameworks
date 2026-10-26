@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { Movie } from "../types";
 import { getPosterUrl } from "../data/sampleMovies";
+import { useAppContext } from "../context/AppContext";
 
 interface MovieCardProps {
   movie: Movie;
@@ -8,7 +8,9 @@ interface MovieCardProps {
 }
 
 const MovieCard = ({ movie, onClick }: MovieCardProps) => {
-  const [isFavourite, setIsFavourite] = useState(false); // each card gets its own copy of this
+  // favorite status lives in the global context now so the header count stays in sync
+  const { isFavorite, toggleFavorite } = useAppContext();
+  const favorited = isFavorite(movie.id);
 
   const year = movie.release_date ? movie.release_date.substring(0, 4) : "TBA";
   const rating = movie.vote_average.toFixed(1);
@@ -30,11 +32,11 @@ const MovieCard = ({ movie, onClick }: MovieCardProps) => {
         <div className="poster-overlay">
           <span className="rating-badge">{rating}</span>
           <button
-            className={`favorite-btn ${isFavourite ? "is-favorite" : ""}`}
-            aria-label={isFavourite ? "Remove from Favourites" : "Add to Favourites"}
+            className={`favorite-btn ${favorited ? "is-favorite" : ""}`}
+            aria-label={favorited ? "Remove from Favourites" : "Add to Favourites"}
             onClick={(e) => {
               e.stopPropagation(); // don't also trigger the card's onClick
-              setIsFavourite(!isFavourite);
+              toggleFavorite(movie);
             }}
           >
             ♥

@@ -1,6 +1,7 @@
 // small helpers around localStorage so components don't touch it directly
-const FAVORITES_KEY = "movieapp.favorites";
-const THEME_KEY = "movieapp.theme";
+// keys match what AppContext writes, so the favorites filter sees the same data
+const FAVORITES_KEY = "cinegrid_favorites";
+const THEME_KEY = "cinegrid_theme";
 const API_KEY = "movieapp.tmdbKey";
 
 export function getFavorites() {

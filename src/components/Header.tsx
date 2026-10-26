@@ -7,7 +7,6 @@ type HeaderProps = {
   onSearch: (value: string) => void
   onlyFavorites: boolean
   onToggleFavorites: () => void
-  favCount: number
   onOpenApiConfig: () => void
 }
 
@@ -16,11 +15,11 @@ export default function Header({
   onSearch,
   onlyFavorites,
   onToggleFavorites,
-  favCount,
   onOpenApiConfig,
 }: HeaderProps) {
-  // theme now comes from context so HomePage doesnt have to thread it in
-  const { theme, toggleTheme } = useAppContext()
+  // theme + favorite count come from context so HomePage doesnt have to thread them in
+  const { theme, toggleTheme, favorites } = useAppContext()
+  const favCount = favorites.length
 
   return (
     <header className="site-header">
