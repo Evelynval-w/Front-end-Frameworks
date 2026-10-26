@@ -2,12 +2,14 @@ import { Heart, Moon, Search, Settings, Sun, X } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import { useAppContext } from "../context/AppContext"
 
+// home-page controls are optional so the header can also be used on simpler
+// routes like /watchlist that dont need a search bar or api key button
 type HeaderProps = {
-  search: string
-  onSearch: (value: string) => void
-  onlyFavorites: boolean
-  onToggleFavorites: () => void
-  onOpenApiConfig: () => void
+  search?: string
+  onSearch?: (value: string) => void
+  onlyFavorites?: boolean
+  onToggleFavorites?: () => void
+  onOpenApiConfig?: () => void
 }
 
 export default function Header({
@@ -21,6 +23,10 @@ export default function Header({
   const { theme, toggleTheme, favorites } = useAppContext()
   const favCount = favorites.length
 
+  const showSearch = onSearch !== undefined
+  const showFavoritesToggle = onToggleFavorites !== undefined
+  const showApiButton = onOpenApiConfig !== undefined
+
   return (
     <header className="site-header">
       <div className="header-brand">
@@ -29,43 +35,48 @@ export default function Header({
           <NavLink to="/" end>
             Home
           </NavLink>
+          <NavLink to="/watchlist">Watchlist</NavLink>
           <NavLink to="/about">About</NavLink>
         </nav>
       </div>
 
       <div className="header-controls">
-        <div className="search-wrapper">
-          <Search size={16} className="search-icon" />
-          <input
-            type="text"
-            className="search-input"
-            placeholder="Search movies..."
-            value={search}
-            onChange={(e) => onSearch(e.target.value)}
-            aria-label="Search movies"
-          />
-          {search && (
-            <button
-              type="button"
-              className="clear-btn"
-              onClick={() => onSearch("")}
-              aria-label="Clear search"
-            >
-              <X size={14} />
-            </button>
-          )}
-        </div>
+        {showSearch && (
+          <div className="search-wrapper">
+            <Search size={16} className="search-icon" />
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Search movies..."
+              value={search ?? ""}
+              onChange={(e) => onSearch?.(e.target.value)}
+              aria-label="Search movies"
+            />
+            {search && (
+              <button
+                type="button"
+                className="clear-btn"
+                onClick={() => onSearch?.("")}
+                aria-label="Clear search"
+              >
+                <X size={14} />
+              </button>
+            )}
+          </div>
+        )}
 
-        <button
-          type="button"
-          className={`btn-icon-label ${onlyFavorites ? "active" : ""}`}
-          onClick={onToggleFavorites}
-          aria-pressed={onlyFavorites}
-        >
-          <Heart size={16} />
-          <span>Favorites</span>
-          <span className="count-badge">{favCount}</span>
-        </button>
+        {showFavoritesToggle && (
+          <button
+            type="button"
+            className={`btn-icon-label ${onlyFavorites ? "active" : ""}`}
+            onClick={onToggleFavorites}
+            aria-pressed={onlyFavorites}
+          >
+            <Heart size={16} />
+            <span>Favorites</span>
+            <span className="count-badge">{favCount}</span>
+          </button>
+        )}
 
         <button
           type="button"
@@ -76,14 +87,16 @@ export default function Header({
           {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
         </button>
 
-        <button
-          type="button"
-          className="btn-icon-label"
-          onClick={onOpenApiConfig}
-        >
-          <Settings size={16} />
-          <span>API Key</span>
-        </button>
+        {showApiButton && (
+          <button
+            type="button"
+            className="btn-icon-label"
+            onClick={onOpenApiConfig}
+          >
+            <Settings size={16} />
+            <span>API Key</span>
+          </button>
+        )}
       </div>
     </header>
   )

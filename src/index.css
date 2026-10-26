@@ -1236,3 +1236,25 @@ select {
   flex-direction: column;
   gap: 12px;
 }
+
+/* Watchlist page */
+.watchlist-section {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.watchlist-header {
+  margin-bottom: 24px;
+}
+
+.watchlist-header h2 {
+  font-size: 1.8rem;
+  margin: 0 0 4px 0;
+}
+
+.watchlist-count {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin: 0;
+}
