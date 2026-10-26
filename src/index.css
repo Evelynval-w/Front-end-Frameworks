@@ -699,7 +699,65 @@ select {
   color: var(--text-muted);
 }
 
-/* Modal */
+/* Modal shell — the component code uses .modal-backdrop / .modal / .modal-close,
+   so we style those directly instead of the unused .modal-overlay set below */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal {
+  position: relative;
+  width: 100%;
+  max-width: 820px;
+  max-height: 90vh;
+  background-color: var(--bg-modal);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-modal);
+  overflow-y: auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* api-key modal has no hero image, so cancel the MovieModal-specific layout */
+.modal-small .modal-body {
+  margin-top: 0;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Legacy modal styles (kept for reference, unused by current components) */
 .modal-overlay {
   position: fixed;
   inset: 0;
