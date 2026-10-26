@@ -1,13 +1,12 @@
 import { Heart, Moon, Search, Settings, Sun, X } from "lucide-react"
 import { NavLink } from "react-router-dom"
+import { useAppContext } from "../context/AppContext"
 
 type HeaderProps = {
   search: string
   onSearch: (value: string) => void
   onlyFavorites: boolean
   onToggleFavorites: () => void
-  theme: "dark" | "light"
-  onToggleTheme: () => void
   favCount: number
   onOpenApiConfig: () => void
 }
@@ -17,11 +16,12 @@ export default function Header({
   onSearch,
   onlyFavorites,
   onToggleFavorites,
-  theme,
-  onToggleTheme,
   favCount,
   onOpenApiConfig,
 }: HeaderProps) {
+  // theme now comes from context so HomePage doesnt have to thread it in
+  const { theme, toggleTheme } = useAppContext()
+
   return (
     <header className="site-header">
       <div className="header-brand">
@@ -71,7 +71,7 @@ export default function Header({
         <button
           type="button"
           className="btn-icon-label"
-          onClick={onToggleTheme}
+          onClick={toggleTheme}
           aria-label="Toggle theme"
         >
           {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}

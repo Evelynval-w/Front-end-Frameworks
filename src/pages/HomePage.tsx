@@ -6,7 +6,7 @@ import MovieCard from "../components/MovieCard"
 import MovieModal from "../components/MovieModal"
 import ApiConfigModal from "../components/ApiConfigModal"
 import { movieService } from "../services/movieService"
-import { getFavorites, getTheme, setTheme as persistTheme } from "../utils/storage"
+import { getFavorites } from "../utils/storage"
 import { Movie } from "../types"
 
 export default function HomePage() {
@@ -24,7 +24,7 @@ export default function HomePage() {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null)
   const [apiConfigOpen, setApiConfigOpen] = useState(false)
 
-  const [theme, setTheme] = useState<"dark" | "light">(getTheme())
+  // favCount still comes from storage until phase 3 moves favorites into context
   const [favCount, setFavCount] = useState(getFavorites().length)
 
   useEffect(() => {
@@ -55,12 +55,6 @@ export default function HomePage() {
     return () => controller.abort()
   }, [search, genre, sort, onlyFavorites])
 
-  const toggleTheme = () => {
-    const next = theme === "dark" ? "light" : "dark"
-    setTheme(next)
-    persistTheme(next)
-  }
-
   const refreshFavCount = () => setFavCount(getFavorites().length)
 
   const avgRating =
@@ -75,8 +69,6 @@ export default function HomePage() {
         onSearch={setSearch}
         onlyFavorites={onlyFavorites}
         onToggleFavorites={() => setOnlyFavorites((v) => !v)}
-        theme={theme}
-        onToggleTheme={toggleTheme}
         favCount={favCount}
         onOpenApiConfig={() => setApiConfigOpen(true)}
       />
